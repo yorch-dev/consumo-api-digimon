@@ -1,7 +1,8 @@
 body {
-    background-color: aquamarine;
+    background-color: darksalmon;
 }
 
-#tarjeta {
-    height: 70vh;
+#tarjeta img {
+    height: 55vh;
+    object-fit: fill;
 }
