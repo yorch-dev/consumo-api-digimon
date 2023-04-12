@@ -12,7 +12,6 @@ async function extraer_nombres() {
             <option value="${datos[idx].name}">${datos[idx].name}</option>
         `
     })
-    return indices.length
 }
 extraer_nombres()
     .then( () => {
