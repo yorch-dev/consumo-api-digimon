@@ -1,8 +1,19 @@
 body {
     background-color: darksalmon;
+    overflow: hidden;
 }
 
 #tarjeta img {
     height: 55vh;
+    object-fit: fill;
+}
+
+#miniaturas {
+    height: 80vh;
+    overflow-y: auto;
+}
+
+#miniaturas img {
+    height: 10rem;
     object-fit: fill;
 }

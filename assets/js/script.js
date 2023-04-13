@@ -1,16 +1,10 @@
-class Digimon {
-    constructor(nombre, nivel) {
-        nombre,
-            nivel
-    }
-}
-
 // objetos del dom
 const url = "https://digimon-api.vercel.app/api/digimon"
 const select_nombre = document.querySelector("#select-nombres")
 const select_nivel = document.querySelector("#select-nivel")
 const tarjeta = document.querySelector("#tarjeta")
-const input_buscar = document.querySelector("#buscar");
+const input_buscar = document.querySelector("#buscar")
+const miniaturas = document.querySelector("#miniaturas")
 const changeEvent = new Event("change") // crear evento de cambio
 
 // lista objetos de clase digimon
@@ -21,7 +15,7 @@ async function extrae_lista_digimon() {
     let response = await fetch(url)
     let datos = await response.json()
     let indices = Object.keys(datos)
-    lista_digimon = indices.map(indice => ({ nombre: datos[indice].name, nivel: datos[indice].level }))
+    lista_digimon = indices.map(indice => ({ nombre: datos[indice].name, nivel: datos[indice].level, imagen: datos[indice].img }))
 }
 
 extrae_lista_digimon()
@@ -77,13 +71,14 @@ extrae_lista_digimon()
                     <option value="${nombre}">${nombre}</option>
                 `
             })
+            cargar_miniaturas()
             ajustarTamanoSelect()
         })
 
         // Event listener para el campo de búsqueda
         input_buscar.addEventListener("keyup", () => {
             let consulta = input_buscar.value.toLowerCase() // Convertir la consulta a minúsculas
-            
+
             // reseteo select_nombre
             let nombres_filtrados = []
             if (select_nivel.value == 0) {
@@ -99,7 +94,7 @@ extrae_lista_digimon()
             })
 
             // Filtrar las opciones del select
-            let opciones_filtradas = Array.from(select_nombre.options).filter( (opcion) => {
+            let opciones_filtradas = Array.from(select_nombre.options).filter((opcion) => {
                 return opcion.text.toLowerCase().startsWith(consulta)
             })
 
@@ -112,7 +107,11 @@ extrae_lista_digimon()
                 select_nombre.appendChild(opcion)
             });
             ajustarTamanoSelect()
+            cargar_miniaturas()
         });
+
+        cargar_miniaturas()
+
     })
 
 function iniciar_selector(selector, mensaje, valor = "0") {
@@ -150,4 +149,49 @@ async function extrae_digimon(nombre) {
     tarjeta.querySelector("#nombre-digimon").innerHTML = `<h4>${name}</h4>`
     tarjeta.querySelector("#nivel-digimon").innerHTML = `<b>Nivel: </b>${level}`
     tarjeta.querySelector("#imagen-digimon").src = img
+}
+
+function cargar_miniaturas() {
+    // reseteo miniaturas
+    let digimones = []
+    if (select_nivel.value == 0) {
+        digimones = lista_digimon.filter(el => {
+            return el.nombre !== undefined
+        })
+    } else {
+        digimones = lista_digimon.filter(el => {
+            return (el.nivel !== undefined && el.nivel === select_nivel.value);
+        });
+    }
+    digimones = digimones.filter( el => Array.from(select_nombre.options).slice(1).map(el => el.text ).includes(el.nombre))
+    digimones.sort((a, b) => {
+        if (a.nombre < b.nombre) {
+            return -1;
+        }
+        if (a.nombre > b.nombre) {
+            return 1;
+        }
+        return 0;
+    })
+    miniaturas.innerHTML = ""
+    digimones.forEach(el => {
+        miniaturas.innerHTML += `<img src="${el.imagen}"
+            class="img-thumbnail" alt="imagen digimon"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="${el.nombre}">`
+    })
+    // habilitar tooltips para miniaturas
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+    const images = document.querySelectorAll('#miniaturas img');
+    images.forEach((element) => {
+        element.addEventListener('click', (el) => {
+            let nombre_tooltip = el.target.dataset.bsTitle
+            select_nombre.selectedIndex = nombre_tooltip
+            extrae_digimon(nombre_tooltip)
+            tarjeta.className = "col d-block"
+        })
+    })
 }
