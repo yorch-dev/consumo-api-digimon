@@ -1,6 +1,14 @@
 body {
     background-color: darksalmon;
     overflow: hidden;
+    background-image: url("../img/fondo-digimon.png");
+    background-repeat: no-repeat;
+    background-size: auto;
+}
+
+.navbar h1 {
+    font-family: 'Bungee Inline', cursive;
+    font-family: 'Tilt Prism', cursive;
 }
 
 #tarjeta img {
@@ -8,7 +16,20 @@ body {
     object-fit: fill;
 }
 
+
+.img-thumbnail:hover {
+    border: 2px solid cornflowerblue;
+}
+
+option:hover {
+    background-color: cornflowerblue;
+    color: blanchedalmond;
+}
+
 #miniaturas {
+    gap: 0.5rem;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
     height: 80vh;
     overflow-y: auto;
 }
@@ -16,4 +37,13 @@ body {
 #miniaturas img {
     height: 10rem;
     object-fit: fill;
+}
+
+.card {
+    height: 80vh;
+}
+
+.modal-content {
+    background-color: darksalmon;
+    border-radius: 10%;
 }

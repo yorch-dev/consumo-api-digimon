@@ -65,7 +65,7 @@ extrae_lista_digimon()
             } else {
                 nombres_filtrados = lista_digimon.filter(el => el.nivel === nivel_buscado).map(el => el.nombre).sort()
             }
-            iniciar_selector(select_nombre, "Seleccione un Digimon (Mostrar todos)")
+            iniciar_selector(select_nombre, "Seleccione un Digimon (Mostrar todos)", "0", true)
             nombres_filtrados.forEach(nombre => {
                 select_nombre.innerHTML += /*html*/`
                     <option value="${nombre}">${nombre}</option>
@@ -114,8 +114,11 @@ extrae_lista_digimon()
 
     })
 
-function iniciar_selector(selector, mensaje, valor = "0") {
-    selector.innerHTML = `<option selected value=${valor}>${mensaje}</option>`
+function iniciar_selector(selector, mensaje, valor = "0", selected = false) {
+    selector.innerHTML = `<option value=${valor}>${mensaje}</option>`
+    if (selected) {
+        select_nombre.value = valor
+    }
 }
 
 // calcula tamaño de caja de opciones en los selects
@@ -189,7 +192,7 @@ function cargar_miniaturas() {
     images.forEach((element) => {
         element.addEventListener('click', (el) => {
             let nombre_tooltip = el.target.dataset.bsTitle
-            select_nombre.selectedIndex = nombre_tooltip
+            select_nombre.value = nombre_tooltip
             extrae_digimon(nombre_tooltip)
             tarjeta.className = "col d-block"
         })
