@@ -4,6 +4,7 @@ body {
     background-image: url("../img/fondo-digimon.png");
     background-repeat: no-repeat;
     background-size: auto;
+    background-position: center;
 }
 
 .navbar h1 {
