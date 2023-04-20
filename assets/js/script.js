@@ -101,7 +101,7 @@ extrae_lista_digimon()
             // Actualizar el select con las opciones filtradas
             select_nombre.innerHTML = ""
             if (input_buscar.value.length > 0) {
-                iniciar_selector(select_nombre, "Seleccione un Digimon (Mostrar todos)")
+                // iniciar_selector(select_nombre, "Seleccione un Digimon (Mostrar todos)")
             }
             opciones_filtradas.forEach(function (opcion) {
                 select_nombre.appendChild(opcion)
